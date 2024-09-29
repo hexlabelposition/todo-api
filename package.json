@@ -1,0 +1,40 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "A simple RESTful API for managing tasks.",
+  "author": "Vladyslav Kudriahov",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexlabelposition/todo-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hexlabelposition/todo-api/issues"
+  },
+  "homepage": "https://github.com/hexlabelposition/todo-api/blob/main/README.md",
+  "scripts": {
+    "dev": "node --watch bin/www"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "API",
+    "REST API",
+    "RESTful",
+    "REST",
+    "CRUD",
+    "task management",
+    "backend",
+    "backend service",
+    "Node",
+    "nodejs",
+    "JavaScript",
+    "ES6",
+    "Express",
+    "JWT",
+    "MongoDB"
+  ]
+}
