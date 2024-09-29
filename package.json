@@ -17,9 +17,10 @@
     "dev": "node --watch bin/www"
   },
   "dependencies": {
-    "express": "^4.21.0"
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0"
   },
-  "devDependencies": {},
   "keywords": [
     "API",
     "REST API",
