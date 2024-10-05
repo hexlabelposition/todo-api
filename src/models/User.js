@@ -1,26 +1,14 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import methods from "./methods.js";
+import statics from "./statics.js";
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-    },
-    middleName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-    },
     username: {
       type: String,
       required: true,
       unique: true,
-    },
-    userId: {
-      type: String,
-      unique: true,
-      default: crypto.randomUUID(),
     },
     email: {
       type: String,
@@ -30,14 +18,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-    },
-    dateOfBirth: {
-      type: Date,
-    },
-    gender: {
-      type: String,
-      enum: ["male", "female", "unselected"],
-      default: "unselected",
     },
     role: {
       type: String,
@@ -55,13 +35,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Method for password comparison
-userSchema.methods.comparePassword = async function (password) {
-  try {
-    return await bcrypt.compare(password, this.password);
-  } catch (error) {
-    throw new Error("Password comparison failed");
-  }
-};
+Object.assign(userSchema.methods, methods);
+Object.assign(userSchema.statics, statics);
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema, "users");
