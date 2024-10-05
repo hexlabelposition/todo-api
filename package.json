@@ -14,15 +14,16 @@
   },
   "homepage": "https://github.com/hexlabelposition/todo-api/blob/main/README.md",
   "scripts": {
-    "start": "node bin/www",
-    "dev": "node --watch bin/www",
-    "test": "cross-env NODE_ENV=test mocha"
+    "start": "cross-env NODE_ENV=production node bin/www",
+    "dev": "cross-env NODE_ENV=development node --watch bin/www",
+    "test": "cross-env NODE_ENV=test mocha test/**/*.test.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "http-errors": "^2.0.0",
     "mongoose": "^8.7.0"
   },
   "keywords": [
@@ -43,7 +44,10 @@
     "MongoDB"
   ],
   "devDependencies": {
+    "chai": "^5.1.1",
     "cross-env": "^7.0.3",
-    "mocha": "^10.7.3"
+    "mocha": "^10.7.3",
+    "mongodb-memory-server": "^10.0.1",
+    "supertest": "^7.0.0"
   }
 }

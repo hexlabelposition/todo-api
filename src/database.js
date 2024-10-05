@@ -1,20 +1,42 @@
-import { connect } from "mongoose";
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 import config from "./config.js";
 
-/**
- * Establishes a connection to a MongoDB database.
- *
- * @return {Promise<void>} Resolves when the connection is successful, rejects with an error message otherwise.
- */
+let mongoServer;
+
 const connectDB = async () => {
+  const env = process.env.NODE_ENV || 'development';
+
   try {
-    await connect(config.mongoUri);
-    console.log("MongoDB connected successfully!");
+    if (env === 'test') {
+      mongoServer = await MongoMemoryServer.create();
+      const uri = mongoServer.getUri();
+      await mongoose.connect(uri);
+      console.log("Connected to in-memory MongoDB!");
+    } else {
+      await mongoose.connect(config.mongoUri);
+      console.log("Connected to cloud MongoDB!");
+    }
   } catch (error) {
     console.error('Database connection error', error);
-    console.error(error.message);
     process.exit(1); // Exit the process with an error
   }
 };
 
-export default connectDB;
+const closeDB = async () => {
+  try {
+    if (process.env.NODE_ENV === 'test') {
+      await mongoose.connection.dropDatabase();
+      await mongoose.disconnect();
+      await mongoServer.stop();
+      console.log("In-memory MongoDB closed!");
+    } else {
+      await mongoose.disconnect();
+      console.log("Cloud MongoDB connection closed!");
+    }
+  } catch (error) {
+    console.error('Error while closing the database connection', error);
+  }
+};
+
+export { connectDB, closeDB };

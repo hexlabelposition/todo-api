@@ -1,18 +1,25 @@
+import mongoose from "mongoose";
 import User from "../../models/User.js";
-import NotFoundError from "../../errors/NotFoundError.js";
+import createHttpError from "http-errors";
 
-const getAllUsers = async () => {
+const findAllUsers = async () => {
   return await User.find();
 };
 
-const getUserById = async (userId) => {
+const findUserById = async (userId) => {
+  const validId = User.isValidObjectId(userId);
+  
+  if (!validId) {
+    throw new createHttpError.BadRequest("Invalid user ID");
+  }
+
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new NotFoundError("User not found");
+    throw new createHttpError.NotFound("User not found");
   }
 
   return user;
 };
 
-export { getAllUsers, getUserById };
+export { findAllUsers, findUserById };
