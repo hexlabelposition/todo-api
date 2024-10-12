@@ -1,15 +1,25 @@
 #!/usr/bin/env node
 
-import app from "../src/app.js";
-import { connectDB } from "../src/database.js";
-import config from "../src/config.js";
+import app from '../src/app.js';
+import MongoDB from '#config/database.js';
+import config from '#config/config.js';
 
-const startServer = async () => {
-  await connectDB();
+// todo: Need to refactor this file
 
-  app.listen(config.port, () => {
+const main = async () => {
+	await MongoDB.connectCloud();
+
+	app.listen(config.port, () => {
 		console.log(`Listening on port ${config.port}`);
 	});
 };
 
-startServer();
+main();
+
+// todo: future feature to stop server
+// Example of graceful shutdown
+// process.on('SIGINT', async () => {
+// 	console.log('Shutting down the application...');
+// 	await MongoDB.disconnect();
+// 	process.exit(0);
+// });
