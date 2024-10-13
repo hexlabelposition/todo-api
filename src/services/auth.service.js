@@ -1,5 +1,5 @@
 import User from '#models/user/user.model.js';
-import { generateToken } from '#shared/token.service.js';
+import tokenService from '#shared/token.service.js';
 import HttpError from 'http-errors';
 
 const register = async (email, password, role) => {
@@ -15,7 +15,7 @@ const register = async (email, password, role) => {
 
 	const user = new User({ email, password, role });
 
-	const token = generateToken({
+	const token = tokenService.generateToken({
 		userId: user.id,
 		role: user.role,
 	});
@@ -49,7 +49,7 @@ const login = async (email, password) => {
 		throw new HttpError.Unauthorized('Invalid password');
 	}
 
-	const token = generateToken({ userId: user.id, role: user.role });
+	const token = tokenService.generateToken({ userId: user.id, role: user.role });
 
 	return {
 		status: 200,

@@ -1,6 +1,6 @@
 import User from '#models/user/user.model.js';
+import tokenService from '#shared/token.service.js';
 import HttpError from 'http-errors';
-import { generateToken } from '#shared/token.service.js';
 
 const createUser = async (email, password, role) => {
 	if (!email || !password) {
@@ -15,7 +15,7 @@ const createUser = async (email, password, role) => {
 
 	const user = new User({ email, password, role });
 
-	const token = generateToken({ userId: user.id, role: user.role });
+	const token = tokenService.generateToken({ userId: user.id, role: user.role });
 
 	await user.save();
 
@@ -60,15 +60,11 @@ const updateUser = async (userId, email, password, role) => {
 		throw new HttpError.BadRequest('Invalid user ID');
 	}
 
-	let user = await User.findById(userId);
+	let user = await User.findByIdAndUpdate(userId, { email, password, role });
 
 	if (!user) {
 		throw new HttpError.NotFound('User not found');
 	}
-
-	user = await user.updateOne({ email, password, role });
-
-	user.save();
 
 	return {
 		status: 200,
@@ -93,6 +89,7 @@ const deleteUser = async (userId) => {
 	return {
 		status: 200,
 		message: 'User deleted successfully',
+		user,
 	};
 };
 
